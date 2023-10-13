@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!-- <form method="post" action="http://localhost:3001/chirps"> -->
-    <form>
+    <form >
         <textarea
             name="message"
             placeholder="What's on your mind?"

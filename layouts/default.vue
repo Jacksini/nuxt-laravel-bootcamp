@@ -5,8 +5,8 @@
         <NuxtLink to="/" class="font-bold">Dashboard</NuxtLink>
         <ul class="flex gap-4">
           <li><NuxtLink to="/chirps">Chirps</NuxtLink></li>
-          <li><NuxtLink to="/products">Products</NuxtLink></li>
           <li><NuxtLink to="/about">About</NuxtLink></li>
+          <li><NuxtLink to="/users/login">Login</NuxtLink></li>
         </ul>
       </nav>
     </header>
