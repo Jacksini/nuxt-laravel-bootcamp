@@ -17,7 +17,9 @@
 </template>
 
 <script setup>
-
+  import { useTokenStore } from '../stores/tokenStore';
+  const tokenStore = useTokenStore();
+  tokenStore.getChirps();
 </script>
   
 <style scoped>

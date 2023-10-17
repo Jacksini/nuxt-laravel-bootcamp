@@ -16,12 +16,13 @@
       />
   </svg>
     </div>
-    <form class="space-y-6" @submit.prevent="submitForm">
+    <form class="space-y-6" @submit.prevent="enviar">
       <div>
         <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
         <div class="mt-1">
           <input
-            type="username"
+            v-model="formData.username"
+            type="text"
             name="username"
             id="username"
             required
@@ -33,6 +34,7 @@
         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
         <div class="mt-1">
           <input
+            v-model="formData.email"
             type="email"
             name="email"
             id="email"
@@ -46,6 +48,7 @@
         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
         <div class="mt-1">
           <input
+            v-model="formData.password"
             type="password"
             name="password"
             id="password"
@@ -59,8 +62,9 @@
         <label for="ConfirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
         <div class="mt-1">
           <input
+            v-model="formData.confirmPassword"
             type="password"
-            name="ConfirmPassword"
+            name="confirmPassword"
             id="ConfirmPassword"
             autocomplete="current-password"
             required
@@ -79,9 +83,22 @@
 </template>
 
 <script setup>
+  import { useUserStore } from '../stores/userStore';
+  const userStore = useUserStore();
+
+const formData = ref({
+  username: '',
+  email: '',
+  password: '',
+  confirmPassword: ''
+});
+
+function enviar() {
+  console.log(formData.value.username);
+  console.log(formData.value.email);
+  console.log(formData.value.password);
+  userStore.createUser(formData.value.username, formData.value.email, formData.value.password);
+}
 
 </script>
 
-<style>
-
-</style>

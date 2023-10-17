@@ -7,15 +7,15 @@
   <div class="flex-1">
     <div class="flex justify-between items-center">
       <div>
-        <span class="text-gray-800">{{ chirp.name }}</span>
-        <small class="ml-2 text-sm text-gray-600">{{ chirp.date }}</small>
+        <span class="text-gray-800">{{ chirp.user.name }}</span>
+        <small class="ml-2 text-sm text-gray-600">{{ formattedDate }}</small>
       </div>
-      <UDropdown :items="items" :popper="{ placement: 'right-start' }" >
+      <UDropdown :items="items" :popper="{ placement: 'right-start' }">
         <button class="hover:bg-zinc-400 rounded-lg p-1 dropdown">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-        </svg>
-      </button>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+          </svg>
+        </button>
       </UDropdown>
     </div>
     <p class="mt-4 text-lg text-gray-900">{{ chirp.message }}</p>
@@ -23,6 +23,8 @@
 </template>
 
 <script setup>
+import { useTokenStore } from '../stores/tokenStore';
+const tokenStore = useTokenStore();
 
 const { chirp } = defineProps([
   'chirp'
@@ -36,24 +38,33 @@ const items = [
     click: () => {
       navigateTo(`/chirps/${chirp.id}`);
     }
-  }],[{
+  }], [{
     label: 'Delete',
-    icon: 'i-heroicons-trash-20-solid',
+    icon: 'i-heroicons-pencil-square-20-solid',
     shortcuts: ['D'],
     click: () => {
-      deleteChirp(chirp.id);
+      tokenStore.deleteChirps(chirp);
     }
   }]
 ]
 
-function deleteChirp(id){
-  useFetch(`http://localhost:3001/chirps/${id}`, {
-    method: 'DELETE'
-  });
-  
-}
+const date = new Date(chirp.updated_at);
+
+const formatDate = (date) => {
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  };
+
+  return date.toLocaleString('en-GB', options).replace(',', '');
+};
+
+const formattedDate = formatDate(date);
+
 </script>
 
-<style>
-
-</style>
+<style></style>

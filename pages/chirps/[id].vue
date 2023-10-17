@@ -3,8 +3,9 @@
       <form method="POST" action="">
           <textarea
               name="message"
+              v-model="editStore.chirp.message"
               class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-          >{{ chirps.message }}</textarea>
+          >{{ editStore.chirp.message }}</textarea>
           <div class="mt-4 space-x-2">
               <button type="button" class="btn primar" @click="saveChirps()">SAVE</button>
               <NuxtLink to="/chirps" class="font-bold">Go Chirps</NuxtLink>
@@ -14,21 +15,18 @@
 </template>
 
 <script setup>
+import { useEditStore } from '../stores/editStore';
+const editStore = useEditStore();
 const { id } = useRoute().params;
-const url = 'http://localhost:3001/chirps/' + id;
+console.log(editStore.editChirp(id));
 
-//fetch data
-const { data: chirps } = await useFetch(url, { key: id });
+const text = ref('');
 
-function saveChirps(){
-  useFetch('http://localhost:3001/chirps/' + id, {
-    method: 'PATCH',
-    body: {
-      chirps: {
-        message: chirps.message,
-      },
-    },
-  });
+
+function saveChirps() {
+    editStore.updateChirp(editStore.chirp);
+    console.log('Chirp actualizado:' + editStore.chirp.message);
+    navigateTo("/chirps");
 }
 </script>
 
