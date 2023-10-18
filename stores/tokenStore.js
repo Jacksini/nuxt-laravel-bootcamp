@@ -15,7 +15,7 @@ export const useTokenStore = defineStore('token', {
                     }
                 });
                 this.chirps = data.chirps; // Asigna los datos de la API a this.chirps
-                console.log(data);
+                // console.log(data);
             } catch (error) {
                 console.error('Error al obtener los chirps:', error);
             }

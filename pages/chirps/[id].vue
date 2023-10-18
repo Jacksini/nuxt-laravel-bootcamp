@@ -23,10 +23,14 @@ console.log(editStore.editChirp(id));
 const text = ref('');
 
 
-function saveChirps() {
-    editStore.updateChirp(editStore.chirp);
-    console.log('Chirp actualizado:' + editStore.chirp.message);
-    navigateTo("/chirps");
+async function saveChirps() {
+    try{
+        await editStore.updateChirp(editStore.chirp);
+        console.log('Chirp actualizado:' + editStore.chirp.message);
+        navigateTo("/chirps");
+    } catch (error) {
+        console.error('Error al guardar chirp:', error);
+    }
 }
 </script>
 

@@ -16,7 +16,7 @@
       />
   </svg>
     </div>
-    <form class="space-y-6" @submit.prevent="enviar">
+    <form class="space-y-6" @submit.prevent="sendForm">
       <div>
         <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
         <div class="mt-1">
@@ -93,11 +93,21 @@ const formData = ref({
   confirmPassword: ''
 });
 
-function enviar() {
-  console.log(formData.value.username);
-  console.log(formData.value.email);
-  console.log(formData.value.password);
-  userStore.createUser(formData.value.username, formData.value.email, formData.value.password);
+function comparePassword(password, confirmPassword){
+  return password === confirmPassword;
+}
+
+async function sendForm() {
+  const result = comparePassword(formData.value.password, formData.value.confirmPassword);
+  if (result){
+    console.log(formData.value.username);
+    console.log(formData.value.email);
+    console.log(formData.value.password);
+    userStore.createUser(formData.value.username, formData.value.email, formData.value.password);
+    await navigateTo('/users/login');
+  }else{
+    console.log("Las constraseñas no coinciden");
+  }
 }
 
 </script>

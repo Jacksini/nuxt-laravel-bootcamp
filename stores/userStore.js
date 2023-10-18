@@ -1,29 +1,39 @@
 import { defineStore } from "pinia";
 
-export const useUserStore = defineStore('token', {
+export const useUserStore = defineStore("user", {
   state: () => ({
     users: [],
   }),
   actions: {
     async createUser(name, email, password) {
-      const data = {
-        name: name,
-        email: email,
-        password: password,
-      };
-
-      console.log("User data sent:", data);
-
-      await $fetch("http://lav.test/api/register", {
-        method: 'POST',   
+      const register = await $fetch("http://lav.test/api/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json', // Cambiado 'Accept' a 'Content-Type'
+          Accept: "application/json",
         },
-        body: JSON.stringify(data), // Convertir el objeto JavaScript a JSON
+        body: {
+          name: name,
+          email: email,
+          password: password,
+        },
       });
-
-      console.log("User data sent:", data);
-    }
+      console.log(register);
+    },
+    async loginUser(email, password) {
+      const data = await $fetch("http://lav.test/oauth/token", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+        body: {
+          username: email,
+          password: password,
+          grant_type: "password",
+          client_id: process.env.VUE_APP_CLIENT_ID,
+          client_secret: process.env.VUE_APP_CLIENT_SECRET,
+        },
+      });
+      console.log(data);
+    },
   },
 });
