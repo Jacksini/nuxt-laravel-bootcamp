@@ -1,8 +1,12 @@
 <template>
   <div>
     <form @submit.prevent="sendChirp">
-      <textarea v-model="chirp.message" name="message" placeholder="What's on your mind?"
-        class="block w-full bg-gray-300 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
+      <textarea 
+      v-model="addChirp" 
+      name="message" 
+      placeholder="What's on your mind?"
+      class="block w-full bg-gray-300 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+      >{{ addChirp }}</textarea>
       <button type="submit" class="mt-4 btn primar">CHIRP</button>
     </form>
   </div>
@@ -12,14 +16,17 @@
   import { useTokenStore } from '../stores/tokenStore';
   const tokenStore = useTokenStore();
 
-  const chirp = ref({ message: '' });
+  const addChirp = ref('');
 
-  const sendChirp = () => {
-  // Acceder al mensaje del chirp desde la referencia 'chirp'
-  console.log('Mensaje del chirp:', chirp.value.message); // Accede a la propiedad 'message' utilizando '.value'
-  // Aquí puedes realizar la lógica para enviar el chirp
-  tokenStore.updateChirp(chirp.value.message);
-};
+  async function sendChirp() {
+    try{
+      console.log(addChirp.value);
+      await tokenStore.createChirp(addChirp.value);
+      addChirp.value = '';
+    } catch (error) {
+        console.error('Error al enviar chirp:', error);
+    }
+  }
 </script>
 
 <style>

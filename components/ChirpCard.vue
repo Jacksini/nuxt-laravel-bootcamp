@@ -57,7 +57,7 @@ const formatDate = (date) => {
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
-    hour12: true
+    hour12: true,
   };
 
   return date.toLocaleString('en-GB', options).replace(',', '');

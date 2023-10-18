@@ -20,17 +20,15 @@ export const useUserStore = defineStore("user", {
       console.log(register);
     },
     async loginUser(email, password) {
+      const token = 'MtkAaahrWt6Mop8U6CXtQWjgNa9iXDvWGcYl6GSa';
       const data = await $fetch("http://lav.test/oauth/token", {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-        },
         body: {
           username: email,
           password: password,
           grant_type: "password",
-          client_id: process.env.VUE_APP_CLIENT_ID,
-          client_secret: process.env.VUE_APP_CLIENT_SECRET,
+          client_id: "2",
+          client_secret: token,
         },
       });
       console.log(data);

@@ -52,6 +52,8 @@
 </template>
 
 <script setup>
+  import { useUserStore } from '../stores/userStore';
+  const userStore = useUserStore();
 
 const form = ref({
   email: '',
@@ -59,8 +61,11 @@ const form = ref({
   rememberMe: false,
 });
 
-function submitForm() {
-  console.log('Form submitted', form.value);
-  // Aquí puedes agregar la lógica para enviar el formulario
+async function submitForm() {
+  console.log(form.value.email);
+  console.log(form.value.password);
+  console.log(form.value.rememberMe);
+  await userStore.loginUser(form.value.email, form.value.password);
+  await navigateTo('/chirps');
 }
 </script>
