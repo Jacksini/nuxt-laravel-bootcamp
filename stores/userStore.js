@@ -3,6 +3,8 @@ import { defineStore } from "pinia";
 export const useUserStore = defineStore("user", {
   state: () => ({
     users: [],
+    clientId: process.env.OAUTH_CLIENT_ID,
+    clientSecret: process.env.OAUTH_CLIENT_SECRET,
   }),
   actions: {
     async createUser(name, email, password) {
@@ -20,15 +22,14 @@ export const useUserStore = defineStore("user", {
       console.log(register);
     },
     async loginUser(email, password) {
-      const token = 'MtkAaahrWt6Mop8U6CXtQWjgNa9iXDvWGcYl6GSa';
       const data = await $fetch("http://lav.test/oauth/token", {
         method: "POST",
         body: {
           username: email,
           password: password,
           grant_type: "password",
-          client_id: "2",
-          client_secret: token,
+          client_id: this.clientId,
+          client_secret: this.clientSecret,
         },
       });
       console.log(data);
