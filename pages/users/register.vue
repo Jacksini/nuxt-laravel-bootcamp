@@ -100,13 +100,10 @@ function comparePassword(password, confirmPassword){
 async function sendForm() {
   const result = comparePassword(formData.value.password, formData.value.confirmPassword);
   if (result){
-    console.log(formData.value.username);
-    console.log(formData.value.email);
-    console.log(formData.value.password);
     userStore.createUser(formData.value.username, formData.value.email, formData.value.password);
     await navigateTo('/users/login');
   }else{
-    console.log("Las constraseñas no coinciden");
+    // console.log("Las constraseñas no coinciden");  ACTUALIZAR A SweerAlert2
   }
 }
 

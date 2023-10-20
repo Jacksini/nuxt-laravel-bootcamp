@@ -10,13 +10,15 @@
         <span class="text-gray-800">{{ chirp.user.name }}</span>
         <small class="ml-2 text-sm text-gray-600">{{ formattedDate }}</small>
       </div>
-      <UDropdown :items="items" :popper="{ placement: 'right-start' }">
+      <div v-if="compareUser(chirp, user)">
+        <UDropdown :items="items" :popper="{ placement: 'right-start' }">
         <button class="hover:bg-zinc-400 rounded-lg p-1 dropdown">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
             <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
           </svg>
         </button>
       </UDropdown>
+      </div>
     </div>
     <p class="mt-4 text-lg text-gray-900">{{ chirp.message }}</p>
   </div>
@@ -24,7 +26,15 @@
 
 <script setup>
 import { useTokenStore } from '../stores/tokenStore';
+import { useUserStore } from '../stores/userStore';
 const tokenStore = useTokenStore();
+const userStore = useUserStore();
+
+const user = await userStore.requestUser();
+
+const compareUser = (chirp, user) => {
+  return chirp.user.id === user.id;
+}
 
 const { chirp } = defineProps([
   'chirp'

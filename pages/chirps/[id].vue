@@ -18,7 +18,7 @@
 import { useEditStore } from '../stores/editStore';
 const editStore = useEditStore();
 const { id } = useRoute().params;
-console.log(editStore.editChirp(id));
+editStore.editChirp(id);
 
 const text = ref('');
 
@@ -26,7 +26,7 @@ const text = ref('');
 async function saveChirps() {
     try{
         await editStore.updateChirp(editStore.chirp);
-        console.log('Chirp actualizado:' + editStore.chirp.message);
+        // console.log('Chirp actualizado:' + editStore.chirp.message); ACTUALIZAR A SweetAlert
         navigateTo("/chirps");
     } catch (error) {
         console.error('Error al guardar chirp:', error);

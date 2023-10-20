@@ -18,9 +18,9 @@
     </div>
     <form class="space-y-6" @submit.prevent="submitForm">
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <label for="username" class="block text-sm font-medium text-gray-700">Email</label>
         <div class="mt-1">
-          <input v-model="form.email" type="email" name="email" id="email" autocomplete="email" required
+          <input v-model="form.username" type="email" name="username" id="username" autocomplete="email" required
             class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" />
         </div>
       </div>
@@ -52,20 +52,28 @@
 </template>
 
 <script setup>
-  import { useUserStore } from '../stores/userStore';
-  const userStore = useUserStore();
 
 const form = ref({
-  email: '',
+  username: '',
   password: '',
   rememberMe: false,
 });
 
 async function submitForm() {
-  console.log(form.value.email);
-  console.log(form.value.password);
-  console.log(form.value.rememberMe);
-  await userStore.loginUser(form.value.email, form.value.password);
-  await navigateTo('/chirps');
+
+  const response = await $fetch('/api/callToken', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: {
+      username: form.value.username,
+      password: form.value.password
+    }
+  });
+  localStorage.setItem('accessToken', response.access_token);
+  navigateTo('/chirps');
 }
+
+
 </script>

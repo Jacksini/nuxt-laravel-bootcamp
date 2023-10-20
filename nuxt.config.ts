@@ -6,7 +6,7 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' }
   },
   runtimeConfig: {
-    clientId: process.env.OAUTH_CLIENT_ID,
-    clientSecret: process.env.OAUTH_CLIENT_SECRET,
-  },
+    clientId: process.env.NUXT_CLIENT_ID,
+    clientSecret: process.env.NUXT_CLIENT_SECRET,
+  }
 })
