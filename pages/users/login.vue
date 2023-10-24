@@ -52,6 +52,10 @@
 </template>
 
 <script setup>
+import { useUserStore } from '../stores/userStore';
+const userStore = useUserStore();
+import { useTokenStore } from '../stores/tokenStore';
+const tokenStore = useTokenStore();
 
 const form = ref({
   username: '',
@@ -59,19 +63,11 @@ const form = ref({
   rememberMe: false,
 });
 
-async function submitForm() {
-
-  const response = await $fetch('/api/callToken', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: {
-      username: form.value.username,
-      password: form.value.password
-    }
-  });
-  localStorage.setItem('accessToken', response.access_token);
+async function submitForm() { 
+  await userStore.login(form.value.username, form.value.password);
+  await userStore.requestUser();
+  await tokenStore.getChirps();
+  window.dispatchEvent(new Event('userLoggedIn')); // Emitir el evento cuando el usuario inicia sesión
   navigateTo('/chirps');
 }
 

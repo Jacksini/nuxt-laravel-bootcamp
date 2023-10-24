@@ -103,9 +103,8 @@ async function sendForm() {
     userStore.createUser(formData.value.username, formData.value.email, formData.value.password);
     await navigateTo('/users/login');
   }else{
-    // console.log("Las constraseñas no coinciden");  ACTUALIZAR A SweerAlert2
+    console.log("Las constraseñas no coinciden");  //ACTUALIZAR A SweerAlert2
   }
 }
-
 </script>
 
