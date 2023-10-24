@@ -20,11 +20,11 @@ export const useTokenStore = defineStore('token', {
             } catch (error) {
                 console.error('Error al realizar la solicitud:', error);
                 return null;
-            }
+            }   
         },
-        async getChirps() {
+        async getChirps(page) {
             try {
-                const data = await this.makeRequest('http://lav.test/api/chirps/', 'GET', null);
+                const data = await this.makeRequest('http://lav.test/api/chirps/?page=' + page, 'GET', null);
                 this.chirps = data.chirps;
             } catch (error) {
                 console.error('Error al obtener los chirps:', error);

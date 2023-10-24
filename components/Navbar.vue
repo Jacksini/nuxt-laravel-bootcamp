@@ -64,9 +64,19 @@
   const state = reactive({
     isLoggedIn: false,
   });
+
+  // Verificar el localStorage al cargar el componente
+  onMounted(() => {
+    const storedLoggedIn = localStorage.getItem('isLoggedIn');
+    if (storedLoggedIn) {
+      state.isLoggedIn = JSON.parse(storedLoggedIn);
+    }
+  });
+
   // Escuchar el evento 'userLoggedIn' para cambiar el estado de isLoggedIn
   window.addEventListener('userLoggedIn', () => {
     state.isLoggedIn = true;
+    localStorage.setItem('isLoggedIn', JSON.stringify(true)); // Guardar en el localStorage
   });
 </script>
 

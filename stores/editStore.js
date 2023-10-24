@@ -17,7 +17,7 @@ export const useEditStore = defineStore("edit", {
             Accept: "application/json",
           },
         });
-        this.chirp = data.chirp; // Asigna los datos de la API a this.chirps
+        this.chirp = data.chirp;
       } catch (error) {
         console.error("Error al obtener los chirps:", error);
       }

@@ -2,7 +2,7 @@
     <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
         <ChirpForm />
         <div class="p-6 flex space-x-2 mt-6 bg-gray-300 shadow-sm rounded-lg hover:bg-blue-200"
-            v-if="tokenStore.chirps.length" v-for="chirp in tokenStore.chirps">
+            v-if="tokenStore.chirps.total" v-for="chirp in tokenStore.chirps.data">
             <ChirpCard :chirp="chirp"/> 
         </div>
         <div class="p-6 flex space-x-2 mt-6 bg-gray-300 shadow-sm rounded-lg hover:bg-blue-200 text-center object-center" v-else>
@@ -11,9 +11,13 @@
         </div>
         <div 
           class="grid place-items-center mt-6"
-          v-if="tokenStore.chirps.length"
+          v-if="tokenStore.chirps.total"
         >
-          <UPagination v-model="page" :page-count="4" :total="items.length" />
+          <UPagination 
+            v-model="page" 
+            :page-count=tokenStore.chirps.per_page 
+            :total="items" 
+          />
         </div>
     </div>
 </template>
@@ -21,8 +25,22 @@
 <script setup>
   import { useTokenStore } from '../stores/tokenStore';
   const tokenStore = useTokenStore();
-  const page = ref(1);
-  const items = ref(Array(100));
+  const page = ref(tokenStore.chirps.current_page);
+  const items = ref(tokenStore.chirps.total);
+
+  console.log();
+
+  watch([() => tokenStore.chirps.current_page, () => tokenStore.chirps.total], ([newPage, newItems], [oldPage, oldItems]) => {
+    page.value = newPage;
+    items.value = newItems;
+  });
+
+  watch(page, async (newPage, oldPage) => {
+    if (newPage !== oldPage) {
+      await tokenStore.getChirps(newPage);
+    }
+  });
+  
 </script>
 
 <style>
