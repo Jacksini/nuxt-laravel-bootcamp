@@ -20,9 +20,10 @@
 
   async function sendChirp() {
     try{
-      console.log(addChirp.value);
       await tokenStore.createChirp(addChirp.value);
       addChirp.value = '';
+      localStorage.setItem('actualPage', 1);
+      await tokenStore.getChirps(localStorage.getItem('actualPage'),localStorage.getItem('perPage'));
     } catch (error) {
         console.error('Error al enviar chirp:', error);
     }

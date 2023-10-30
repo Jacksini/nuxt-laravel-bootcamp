@@ -43,7 +43,6 @@
           </NuxtLink>
         </div>
       </div>
-
       <div>
         <button type="submit" class="w-full btn primar">Sign in</button>
       </div>
@@ -57,6 +56,14 @@ const userStore = useUserStore();
 import { useTokenStore } from '../stores/tokenStore';
 const tokenStore = useTokenStore();
 
+const toast = useToast()
+
+const showToast = () => {
+  toast.add({
+    title: 'Usuario o contraseña incorrecta!'
+  })
+}
+
 const form = ref({
   username: '',
   password: '',
@@ -64,12 +71,18 @@ const form = ref({
 });
 
 async function submitForm() { 
-  await userStore.login(form.value.username, form.value.password);
-  await userStore.requestUser();
-  await tokenStore.getChirps();
-  window.dispatchEvent(new Event('userLoggedIn')); // Emitir el evento cuando el usuario inicia sesión
+  try {
+    await userStore.login(form.value.username, form.value.password);
+    localStorage.setItem('actualPage', 1);
+    localStorage.setItem('perPage', 4);
+    const user = await userStore.requestUser();
+    localStorage.setItem('user', user.email);
+    await tokenStore.getChirps(localStorage.getItem('actualPage'),localStorage.getItem('perPage'));
+    window.dispatchEvent(new Event('userLoggedIn')); // Emitir el evento cuando el usuario inicia sesión
   navigateTo('/chirps');
+  } catch (error) {
+    showToast();
+  }
 }
-
 
 </script>

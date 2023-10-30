@@ -33,6 +33,8 @@ export const useUserStore = defineStore("user", {
           'Accept': "application/json",
         },  
       });
+      this.users = user;
+      console.log(this.users);
       return user;
     },
     async login(username, password) {

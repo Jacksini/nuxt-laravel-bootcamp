@@ -35,7 +35,7 @@ export const useEditStore = defineStore("edit", {
             message: chirp.message,
           },
         });
-        await tokenStore.getChirps();
+        await tokenStore.getChirps(localStorage.getItem('actualPage'),localStorage.getItem('perPage'));
       } catch (error) {
         console.error('Error al actualizar el chirp:', error);
       }

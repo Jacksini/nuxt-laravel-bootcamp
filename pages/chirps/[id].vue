@@ -22,11 +22,18 @@ editStore.editChirp(id);
 
 const text = ref('');
 
+const toast = useToast()
+
+const showToast = () => {
+  toast.add({
+    title: 'Chirp actualizado!'
+  })
+}
 
 async function saveChirps() {
     try{
         await editStore.updateChirp(editStore.chirp);
-        // console.log('Chirp actualizado:' + editStore.chirp.message); ACTUALIZAR A SweetAlert
+        showToast();
         navigateTo("/chirps");
     } catch (error) {
         console.error('Error al guardar chirp:', error);

@@ -9,10 +9,11 @@
       <div>
         <span class="text-gray-800">{{ chirp.user.name }}</span>
         <small class="ml-2 text-sm text-gray-600">{{ formattedDate }}</small>
+        <small class="ml-2 text-sm text-gray-600">{{ chirp.id }}</small>
       </div>
-      <div v-if="compareUser(chirp, user)">
+      <div v-if="compareUser(chirp)">
         <UDropdown :items="items" :popper="{ placement: 'right-start' }">
-        <button class="hover:bg-zinc-400 rounded-lg p-1 dropdown">
+        <button class="hover:bg-zinc-400 rounded-lg p-1 dropdown" @click="test">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
             <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
           </svg>
@@ -28,17 +29,19 @@
 import { useTokenStore } from '../stores/tokenStore';
 import { useUserStore } from '../stores/userStore';
 const tokenStore = useTokenStore();
-const userStore = useUserStore();
+const userStore = useUserStore(); 
 
-const user = await userStore.requestUser();
-
-const compareUser = (chirp, user) => {
-  return chirp.user.id === user.id;
+function compareUser(chirps){
+  console.log(chirps.user.id);
+  console.log(userStore.users.id);
+  return chirp.user.id === userStore.users.id;
 }
 
 const { chirp } = defineProps([
   'chirp'
 ]);
+
+const chirpActual = ref(chirp.id);
 
 const items = [
   [{

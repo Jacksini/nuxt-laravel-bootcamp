@@ -22,9 +22,9 @@ export const useTokenStore = defineStore('token', {
                 return null;
             }   
         },
-        async getChirps(page) {
+        async getChirps(page, perPage) {
             try {
-                const data = await this.makeRequest('http://lav.test/api/chirps/?page=' + page, 'GET', null);
+                const data = await this.makeRequest('http://lav.test/api/chirps/?page=' + page + "&perPage=" + perPage, 'GET', null);
                 this.chirps = data.chirps;
             } catch (error) {
                 console.error('Error al obtener los chirps:', error);
@@ -32,13 +32,13 @@ export const useTokenStore = defineStore('token', {
         },
         async deleteChirps(chirp) { 
             await this.makeRequest('http://lav.test/api/chirps/' + chirp.id, 'DELETE', null);
-            await this.getChirps();
+            await this.getChirps(localStorage.getItem('actualPage'),localStorage.getItem('perPage'));
         },
         async createChirp(chirp) {
             await this.makeRequest('http://lav.test/api/chirps', 'POST', {
                 message: chirp
             });
-            await this.getChirps();
+            await this.getChirps(localStorage.getItem('actualPage'),localStorage.getItem('perPage'));
         },
     }   
 });

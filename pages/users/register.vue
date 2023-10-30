@@ -97,13 +97,21 @@ function comparePassword(password, confirmPassword){
   return password === confirmPassword;
 }
 
+const toast = useToast()
+
+const showToast = () => {
+  toast.add({
+    title: 'Las contraseñas no coinciden!'
+  })
+}
+
 async function sendForm() {
   const result = comparePassword(formData.value.password, formData.value.confirmPassword);
   if (result){
     userStore.createUser(formData.value.username, formData.value.email, formData.value.password);
     await navigateTo('/users/login');
   }else{
-    console.log("Las constraseñas no coinciden");  //ACTUALIZAR A SweerAlert2
+    showToast();
   }
 }
 </script>

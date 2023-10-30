@@ -43,23 +43,37 @@
 </template>
 
 <script setup>
-// import { useUserStore } from '../stores/userStore';
-// const userStore = useUserStore();
-// const user = await userStore.requestUser();
+import { useUserStore } from '../stores/userStore';
+const userStore = useUserStore();
+
+let user = {
+  email: ''
+};
 
   const items = [
   [{
-    label: 'test user',
+    label: localStorage.getItem('user'),
     slot: 'account',
     disabled: true
   }], [{
     label: 'Sign out',
     icon: 'i-heroicons-arrow-left-on-rectangle',
     click: () => {
+      logout();
       console.log('You have logged out');
     }
   }]
-]  
+]
+
+  function logout() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('perPage');
+    localStorage.removeItem('actualPage');
+    localStorage.removeItem('user');
+    state.isLoggedIn = false;
+    navigateTo('/users/login');
+  }
 
   const state = reactive({
     isLoggedIn: false,
